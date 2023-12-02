@@ -3,7 +3,7 @@ env:
   parameter-store:
     LOGIN: LOGIN
     HOST: HOST
-    Organization: Organization
+    Organisation: Organisation
     Project: Project
     CODEARTIFACT_AUTH_TOKEN: CODEARTIFACT_AUTH_TOKEN
 phases:
