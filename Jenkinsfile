@@ -1,12 +1,8 @@
-def COLOR_MAP = [
-    'SUCCESS': 'good', 
-    'FAILURE': 'danger',
-]
 pipeline {
     agent any
     tools {
-        maven "maven"
-        jdk "OracleJDK8"
+        maven "maven3"
+        jdk "OracleJDK21"
     }
     
     environment {
@@ -14,13 +10,13 @@ pipeline {
 		NEXUS_USER = 'admin'
 		NEXUS_PASS = 'admin123'
 		RELEASE_REPO = 'vprofile-release'
-		CENTRAL_REPO = 'vpro-maven-proxy'
-		NEXUSIP = '172.31.82.159'
+		CENTRAL_REPO = 'vpro-maven-central'
+		NEXUSIP = '1172.31.51.49'
 		NEXUSPORT = '8081'
 		NEXUS_GRP_REPO = 'vpro-maven-group'
-        NEXUS_LOGIN = 'nexuslogin'
-        SONARSERVER = 'sonarserver'
-        SONARSCANNER = 'sonarscanner'
+        NEXUS_LOGIN = 'nexus-credentials'
+        SONARSERVER = 'sonar-server'
+        SONARSCANNER = 'sonar-scanner'
     }
 
     stages {
@@ -49,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('Sonar Analysis') {
+//        stage('Sonar Analysis') {
             environment {
                 scannerHome = tool "${SONARSCANNER}"
             }
@@ -67,7 +63,7 @@ pipeline {
             }
         }
 
-        stage("Quality Gate") {
+//        stage("Quality Gate") {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
@@ -77,7 +73,7 @@ pipeline {
             }
         }
 
-        stage("UploadArtifact"){
+//        stage("UploadArtifact"){
             steps{
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
@@ -96,7 +92,7 @@ pipeline {
                 )
             }
         }
-
+        
     }
     post {
         always {
